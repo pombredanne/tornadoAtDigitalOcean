@@ -1,4 +1,5 @@
-import tornado.wsgi
+import tornado.ioloop
+import tornado.web
 import os
  
 class MainHandler(tornado.web.RequestHandler):
@@ -8,9 +9,10 @@ class MainHandler(tornado.web.RequestHandler):
  
 settings = {"template_path": os.path.join(os.path.dirname(__file__), 
 				   	   "templates")}
-apphandlers = tornado.wsgi.WSGIApplication([
+application = tornado.web.Application([
     (r"/", MainHandler),
 ], **settings)
-from bae.core.wsgi import WSGIApplication
 
-application = WSGIApplication(apphandlers)
+if __name__ == "__main__":
+    application.listen(8888)
+    tornado.ioloop.IOLoop.instance().start()
